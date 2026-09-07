@@ -1,0 +1,39 @@
+# I Loving — инструкция по запуску
+
+## 1. Создай аккаунт на GitHub (~2 минуты)
+1. Открой https://github.com/signup
+2. Введи почту, придумай пароль, придумай username (например `vashka_другой`)
+3. Подтверди почту
+
+## 2. Задеплой игру (1 команда)
+Открой PowerShell и выполни (вместо `твой_username` подставь свой):
+
+    powershell -ExecutionPolicy Bypass -File "C:\Users\User\Documents\Default Project\iloving\deploy.ps1" твой_username
+
+Скрипт сам:
+- авторизует тебя на GitHub (откроется браузер)
+- создаст репозиторий `iloving`
+- загрузит игру
+- включит GitHub Pages
+
+Получишь ссылку вида: `https://твой_username.github.io/iloving/`
+
+## 3. Создай Discord приложение (~2 минуты)
+1. Открой https://discord.com/developers/applications
+2. Нажми **New Application** → назови `I Loving`
+3. General Information: загрузи иконку, описание «Твоя виртуальная подруга ♡»
+4. Слева вкладка **Activity** → **Edit Activity**
+5. В поле URL вставь ссылку из шага 2
+6. Нажми **Save**
+
+## 4. Играй
+1. Открой Discord → любой голосовой канал
+2. Нажми на значок 🎮 **Activities** (низ слева)
+3. Выбери **I Loving** → начни игру, пригласи друзей!
+
+## Локальный запуск (без интернета)
+    "C:\Users\User\Documents\Default Project\iloving\start.bat"
+    → http://localhost:3001
+
+## Автозапуск при старте ПК (уже настроен)
+Игра автоматически стартует при входе в Windows и работает незаметно в фоне.

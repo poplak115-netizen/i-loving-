@@ -1,0 +1,9 @@
+{
+  "name": "iloving",
+  "version": "1.0.0",
+  "description": "I Loving - Виртуальная подруга для Discord Activity",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a0a2e">
+  <title>I Loving</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --bg:#0d0618;
+      --bg2:#1a0a2e;
+      --bg3:#251245;
+      --purple:#9b5de5;
+      --violet:#c77dff;
+      --pink:#f15bb5;
+      --lilac:#e0aaff;
+      --accent:#fee440;
+      --text:#e8daf5;
+      --muted:#7b6b99;
+    }
+    html,body{height:100%;overflow:hidden}
+    body{
+      font-family:'Quicksand',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+
+    /* ===== ANIMATED BG ===== */
+    .bg-particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .particle{
+      position:absolute;
+      border-radius:50%;
+      animation:floatUp linear infinite;
+      opacity:0;
+    }
+    @keyframes floatUp{
+      0%{transform:translateY(100vh) scale(0);opacity:0}
+      10%{opacity:1}
+      90%{opacity:1}
+      100%{transform:translateY(-10vh) scale(1);opacity:0}
+    }
+
+    /* ===== MAIN CONTAINER ===== */
+    .game{
+      position:relative;z-index:1;
+      width:100%;max-width:420px;
+      height:100vh;height:100dvh;
+      display:flex;flex-direction:column;
+      padding:16px;
+      overflow-y:auto;
+      scrollbar-width:none;
+    }
+    .game::-webkit-scrollbar{display:none}
+
+    /* ===== HEADER ===== */
+    .header{
+      text-align:center;
+      padding:8px 0 4px;
+    }
+    .header h1{
+      font-family:'Nunito',sans-serif;
+      font-size:1.8rem;font-weight:900;
+      background:linear-gradient(135deg,var(--violet),var(--pink));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .header .sub{font-size:.75rem;color:var(--muted);font-weight:600}
+    .discord-status{
+      display:none;align-items:center;gap:5px;
+      margin-top:6px;
+      font-size:.68rem;font-weight:700;
+      color:var(--violet);
+      border:1px solid rgba(155,93,229,0.3);
+      border-radius:50px;
+      padding:4px 10px;
+    }
+    .discord-status .dot{
+      width:7px;height:7px;border-radius:50%;
+      background:#57f287;
+      animation:blink 2s infinite;
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+    /* ===== CHARACTER ===== */
+    .char-section{
+      display:flex;justify-content:center;
+      padding:10px 0 6px;
+      position:relative;
+    }
+    .char-container{
+      position:relative;
+      width:220px;height:280px;
+    }
+
+    /* Anime girl - pure CSS */
+    .anime-girl{position:relative;width:100%;height:100%}
+
+    /* Glow behind character */
+    .char-glow{
+      position:absolute;
+      bottom:20px;left:50%;transform:translateX(-50%);
+      width:140px;height:30px;
+      background:radial-gradient(ellipse,rgba(155,93,229,0.4),transparent);
+      border-radius:50%;
+      animation:pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse{0%,100%{transform:translateX(-50%) scaleX(1);opacity:.6}50%{transform:translateX(-50%) scaleX(1.2);opacity:1}}
+
+    /* Hair back */
+    .hair-back{
+      position:absolute;top:30px;left:30px;
+      width:160px;height:170px;
+      background:linear-gradient(180deg,#2d1b4e,#1a0f30);
+      border-radius:80px 80px 40px 40px;
+      z-index:1;
+    }
+    .hair-back::before,.hair-back::after{
+      content:'';position:absolute;bottom:-30px;
+      width:40px;height:80px;
+      background:linear-gradient(180deg,#2d1b4e,#1a0f30);
+      border-radius:0 0 20px 20px;
+    }
+    .hair-back::before{left:10px;transform:rotate(-5deg)}
+    .hair-back::after{right:10px;transform:rotate(5deg)}
+
+    /* Head */
+    .head{
+      position:absolute;top:32px;left:50%;transform:translateX(-50%);
+      width:110px;height:120px;
+      background:linear-gradient(180deg,#fce4ec,#f8bbd0);
+      border-radius:55px 55px 50px 50px;
+      z-index:3;
+    }
+
+    /* Eyes */
+    .eyes{position:absolute;top:45px;left:50%;transform:translateX(-50%);width:80px;display:flex;justify-content:space-between;z-index:5}
+    .eye{
+      width:28px;height:32px;
+      background:linear-gradient(180deg,var(--purple),#6a1b9a);
+      border-radius:50%;
+      position:relative;
+      animation:blink 4s ease-in-out infinite;
+    }
+    .eye::before{
+      content:'';position:absolute;
+      top:6px;left:6px;
+      width:10px;height:10px;
+      background:white;border-radius:50%;
+    }
+    .eye::after{
+      content:'';position:absolute;
+      top:14px;right:5px;
+      width:5px;height:5px;
+      background:rgba(255,255,255,0.6);border-radius:50%;
+    }
+    @keyframes blink{0%,96%,100%{transform:scaleY(1)}98%{transform:scaleY(0.1)}}
+
+    /* Blush */
+    .blush{
+      position:absolute;top:65px;
+      width:18px;height:10px;
+      background:rgba(255,107,157,0.35);
+      border-radius:50%;z-index:5;
+    }
+    .blush.l{left:8px}
+    .blush.r{right:8px}
+
+    /* Mouth */
+    .mouth{
+      position:absolute;top:78px;left:50%;transform:translateX(-50%);
+      width:12px;height:6px;
+      border-bottom:2.5px solid #e91e63;
+      border-radius:0 0 50% 50%;z-index:5;
+    }
+
+    /* Bangs */
+    .bangs{
+      position:absolute;top:22px;left:50%;transform:translateX(-50%);
+      width:120px;height:60px;
+      background:linear-gradient(180deg,#2d1b4e,#3d2570);
+      border-radius:60px 60px 30px 30px;
+      z-index:6;
+    }
+    .bangs::before{
+      content:'';position:absolute;bottom:-20px;left:10px;
+      width:30px;height:40px;
+      background:#2d1b4e;border-radius:0 0 15px 15px;
+      transform:rotate(-8deg);
+    }
+    .bangs::after{
+      content:'';position:absolute;bottom:-20px;right:10px;
+      width:30px;height:40px;
+      background:#2d1b4e;border-radius:0 0 15px 15px;
+      transform:rotate(8deg);
+    }
+
+    /* Hair clips */
+    .clip{
+      position:absolute;top:35px;
+      width:12px;height:20px;
+      background:var(--pink);
+      border-radius:6px;
+      z-index:7;
+      transform:rotate(-15deg);
+    }
+    .clip.l{left:25px}
+    .clip.r{right:25px;transform:rotate(15deg)}
+
+    /* Body */
+    .body-part{
+      position:absolute;top:145px;left:50%;transform:translateX(-50%);
+      width:90px;height:80px;
+      background:linear-gradient(180deg,var(--purple),#7b2fa0);
+      border-radius:30px 30px 40px 40px;
+      z-index:2;
+    }
+    .body-part::before{
+      content:'';position:absolute;top:5px;left:50%;transform:translateX(-50%);
+      width:20px;height:15px;
+      background:white;border-radius:50%;
+    }
+
+    /* Skirt */
+    .skirt{
+      position:absolute;top:210px;left:50%;transform:translateX(-50%);
+      width:100px;height:45px;
+      background:linear-gradient(180deg,#3d1a6e,#2a1050);
+      border-radius:5px 5px 50px 50px;
+      z-index:2;
+    }
+
+    /* Legs */
+    .legs{
+      position:absolute;top:250px;left:50%;transform:translateX(-50%);
+      width:60px;display:flex;justify-content:space-between;z-index:1;
+    }
+    .leg{
+      width:20px;height:30px;
+      background:linear-gradient(180deg,#fce4ec,#f8bbd0);
+      border-radius:0 0 10px 10px;
+    }
+
+    /* Floating hearts */
+    .float-hearts{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10}
+    .fheart{
+      position:absolute;
+      font-size:1.2rem;
+      animation:heartFloat 3s ease-in-out infinite;
+      opacity:0;
+    }
+    @keyframes heartFloat{
+      0%{transform:translateY(0) scale(0);opacity:0}
+      20%{opacity:1;transform:translateY(-20px) scale(1)}
+      80%{opacity:0.6}
+      100%{transform:translateY(-120px) scale(0.5);opacity:0}
+    }
+
+    /* ===== MOOD BUBBLE ===== */
+    .mood-bubble{
+      position:absolute;top:-5px;right:10px;
+      background:rgba(37,18,69,0.9);
+      border:1.5px solid var(--purple);
+      border-radius:14px;
+      padding:5px 10px;
+      font-size:.7rem;font-weight:700;
+      z-index:20;
+      animation:bubbleBob 2s ease-in-out infinite;
+      white-space:nowrap;
+    }
+    .mood-bubble::after{
+      content:'';position:absolute;bottom:-6px;left:15px;
+      width:0;height:0;
+      border-left:5px solid transparent;
+      border-right:5px solid transparent;
+      border-top:6px solid var(--purple);
+    }
+    @keyframes bubbleBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+
+    /* ===== STATS ===== */
+    .stats{
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:8px;padding:8px 0;
+    }
+    .stat-box{
+      background:var(--bg2);
+      border:1px solid rgba(155,93,229,0.15);
+      border-radius:14px;padding:12px;
+    }
+    .stat-box .slbl{font-size:.65rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+    .stat-box .sval{font-size:1.3rem;font-weight:800;margin-top:2px}
+    .stat-bar{
+      width:100%;height:5px;
+      background:rgba(155,93,229,0.15);
+      border-radius:3px;margin-top:6px;overflow:hidden;
+    }
+    .stat-fill{
+      height:100%;border-radius:3px;
+      transition:width 0.5s ease;
+    }
+    .stat-fill.love{background:linear-gradient(90deg,var(--pink),var(--violet))}
+    .stat-fill.energy{background:linear-gradient(90deg,var(--accent),#ff9800)}
+    .stat-fill.mood{background:linear-gradient(90deg,var(--violet),var(--purple))}
+    .stat-fill.food{background:linear-gradient(90deg,#4caf50,#8bc34a)}
+
+    /* ===== ACTIONS ===== */
+    .actions{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:8px;padding:8px 0 16px;
+    }
+    .action-btn{
+      display:flex;flex-direction:column;
+      align-items:center;gap:4px;
+      background:var(--bg2);
+      border:1.5px solid rgba(155,93,229,0.2);
+      border-radius:16px;
+      padding:12px 4px;
+      cursor:pointer;
+      transition:all 0.2s;
+      font-family:inherit;
+      color:var(--text);
+    }
+    .action-btn:active{
+      transform:scale(0.92);
+      border-color:var(--purple);
+      background:var(--bg3);
+    }
+    .action-btn .aicon{font-size:1.5rem}
+    .action-btn .albl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+
+    /* ===== FLOATING EFFECTS ===== */
+    .effect{
+      position:fixed;
+      pointer-events:none;
+      z-index:100;
+      font-size:1.5rem;
+      animation:effectPop 1s ease forwards;
+    }
+    @keyframes effectPop{
+      0%{transform:scale(0) translateY(0);opacity:1}
+      50%{transform:scale(1.3) translateY(-30px);opacity:1}
+      100%{transform:scale(0.8) translateY(-60px);opacity:0}
+    }
+
+    /* ===== TOAST ===== */
+    .toast{
+      position:fixed;top:20px;left:50%;transform:translateX(-50%);
+      background:var(--bg3);
+      border:1px solid var(--purple);
+      border-radius:12px;
+      padding:10px 20px;
+      font-size:.8rem;font-weight:700;
+      z-index:200;
+      animation:toastIn 0.3s ease, toastOut 0.3s ease 1.5s forwards;
+      white-space:nowrap;
+    }
+    @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+    @keyframes toastOut{to{opacity:0;transform:translateX(-50%) translateY(-20px)}}
+
+    /* ===== SPARKLE ===== */
+    .sparkle{
+      position:absolute;
+      width:4px;height:4px;
+      background:var(--accent);
+      border-radius:50%;
+      pointer-events:none;
+      animation:sparkle 0.6s ease forwards;
+    }
+    @keyframes sparkle{
+      0%{transform:scale(0);opacity:1}
+      50%{transform:scale(1.5);opacity:0.8}
+      100%{transform:scale(0);opacity:0}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <div class="game">
+    <div class="header">
+      <h1>I Loving</h1>
+      <div class="sub">Твоя виртуальная подруга</div>
+      <div class="discord-status" id="discordStatus"><span class="dot"></span>Discord Activity</div>
+    </div>
+
+    <div class="char-section">
+      <div class="char-container" id="charContainer" onclick="petCharacter()">
+        <div class="char-glow"></div>
+        <div class="anime-girl">
+          <div class="hair-back"></div>
+          <div class="head">
+            <div class="eyes">
+              <div class="eye"></div>
+              <div class="eye"></div>
+            </div>
+            <div class="blush l"></div>
+            <div class="blush r"></div>
+            <div class="mouth"></div>
+          </div>
+          <div class="bangs"></div>
+          <div class="clip l"></div>
+          <div class="clip r"></div>
+          <div class="body-part"></div>
+          <div class="skirt"></div>
+          <div class="legs">
+            <div class="leg"></div>
+            <div class="leg"></div>
+          </div>
+        </div>
+        <div class="float-hearts" id="floatHearts"></div>
+        <div class="mood-bubble" id="moodBubble">Рада见到 тебя~ ♡</div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-box">
+        <div class="slbl">❤️ Любовь</div>
+        <div class="sval" id="loveVal">50</div>
+        <div class="stat-bar"><div class="stat-fill love" id="loveBar" style="width:50%"></div></div>
+      </div>
+      <div class="stat-box">
+        <div class="slbl">⚡ Энергия</div>
+        <div class="sval" id="energyVal">80</div>
+        <div class="stat-bar"><div class="stat-fill energy" id="energyBar" style="width:80%"></div></div>
+      </div>
+      <div class="stat-box">
+        <div class="slbl">😊 Настроение</div>
+        <div class="sval" id="moodVal">70</div>
+        <div class="stat-bar"><div class="stat-fill mood" id="moodBar" style="width:70%"></div></div>
+      </div>
+      <div class="stat-box">
+        <div class="slbl">🍔 Еда</div>
+        <div class="sval" id="foodVal">60</div>
+        <div class="stat-bar"><div class="stat-fill food" id="foodBar" style="width:60%"></div></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="action-btn" onclick="doAction('feed')">
+        <span class="aicon">🍰</span>
+        <span class="albl">Покормить</span>
+      </button>
+      <button class="action-btn" onclick="doAction('hug')">
+        <span class="aicon">🤗</span>
+        <span class="albl">Обнять</span>
+      </button>
+      <button class="action-btn" onclick="doAction('gift')">
+        <span class="aicon">🎁</span>
+        <span class="albl">Подарок</span>
+      </button>
+      <button class="action-btn" onclick="doAction('talk')">
+        <span class="aicon">💬</span>
+        <span class="albl">Поговорить</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // ===== DISCORD SDK (Activity) =====
+    // ЗАМЕНИТЬ_IDЕШЬ_ТУТ_СВОЙ_APPLICATION_ID
+    const DISCORD_APP_ID = 'ЗАМЕНИТЬ_СВОЙ_APPLICATION_ID';
+
+    async function initDiscord() {
+      try {
+        const { DiscordSDK } = await import('https://cdn.jsdelivr.net/npm/@discord/embedded-app-sdk@2.5.0/output/index.mjs');
+        const discordSdk = new DiscordSDK(DISCORD_APP_ID);
+        await discordSdk.ready();
+        document.getElementById('discordStatus').textContent = 'Discord Activity ✓';
+        document.getElementById('discordStatus').style.display = 'flex';
+      } catch (e) {
+        console.warn('Not running inside Discord:', e.message);
+      }
+    }
+
+    // ===== STATE =====
+    const state = {
+      love: 50, energy: 80, mood: 70, food: 60
+    };
+
+    const moods = {
+      happy: ['Я тебя люблю~ ♡','Ты лучший! ✨','Мурр~ ❤️','С тобой так güzelno! 🌸'],
+      hungry: ['Хочу кушать... 🍰','Голодная~ 😢','Накорми меня? 🍙'],
+      tired: ['Хочу спать... 💤','Устала~ 😴','Подремлю чуток... 🌙'],
+      sad: ['Мне грустно... 💜','Обними меня? 🥺','Хочу внимания... 💫'],
+      default: ['Привет! 🐱','Я рядом~ 💕','Мы всегда вместе! ✨','Ты мой мир! 🌙']
+    };
+
+    // ===== PARTICLES =====
+    function createParticles() {
+      const el = document.getElementById('bgParticles');
+      for (let i = 0; i < 15; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const size = 2 + Math.random() * 4;
+        const colors = ['var(--purple)','var(--violet)','var(--pink)','var(--lilac)'];
+        p.style.cssText = `
+          left:${Math.random()*100}%;
+          width:${size}px;height:${size}px;
+          background:${colors[Math.floor(Math.random()*colors.length)]};
+          animation-duration:${8+Math.random()*12}s;
+          animation-delay:${Math.random()*10}s;
+        `;
+        el.appendChild(p);
+      }
+    }
+
+    // ===== UPDATE UI =====
+    function updateStats() {
+      ['love','energy','mood','food'].forEach(k => {
+        state[k] = Math.max(0, Math.min(100, state[k]));
+        document.getElementById(k+'Val').textContent = Math.round(state[k]);
+        document.getElementById(k+'Bar').style.width = state[k]+'%';
+      });
+      updateMood();
+      saveState();
+    }
+
+    function updateMood() {
+      const el = document.getElementById('moodBubble');
+      let mood, msgs;
+      if (state.food < 20) { mood = 'hungry'; msgs = moods.hungry; }
+      else if (state.energy < 20) { mood = 'tired'; msgs = moods.tired; }
+      else if (state.mood < 30) { mood = 'sad'; msgs = moods.sad; }
+      else { mood = 'happy'; msgs = moods.happy; }
+      el.textContent = msgs[Math.floor(Math.random()*msgs.length)];
+    }
+
+    // ===== ACTIONS =====
+    function doAction(type) {
+      const effects = {
+        feed: { food: 15, energy: 5, mood: 10, love: 2, icon: '🍰', text: '+15 Еды' },
+        hug:  { love: 15, mood: 10, energy: -3, icon: '💕', text: '+15 Любви' },
+        gift: { love: 10, mood: 20, energy: 5, icon: '🎁', text: '+20 Настроения' },
+        talk: { mood: 8, love: 5, energy: -2, icon: '💬', text: '+8 Настроения' },
+      };
+      const a = effects[type];
+      Object.keys(a).forEach(k => {
+        if (k !== 'icon' && k !== 'text' && state[k] !== undefined) state[k] += a[k];
+      });
+
+      spawnEffect(a.icon);
+      showToast(a.text);
+      spawnSparkles();
+      updateStats();
+    }
+
+    function petCharacter() {
+      state.love += 3;
+      state.mood += 2;
+      spawnHeart();
+      spawnEffect('💖');
+      updateStats();
+    }
+
+    // ===== EFFECTS =====
+    function spawnEffect(icon) {
+      const el = document.createElement('div');
+      el.className = 'effect';
+      el.textContent = icon;
+      el.style.left = (40 + Math.random()*20) + '%';
+      el.style.top = (30 + Math.random()*20) + '%';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+
+    function spawnHeart() {
+      const el = document.createElement('div');
+      el.className = 'fheart';
+      el.textContent = ['❤️','💜','💗','💕'][Math.floor(Math.random()*4)];
+      el.style.left = (20 + Math.random()*60) + '%';
+      el.style.bottom = '40%';
+      el.style.animationDuration = (2 + Math.random()*2) + 's';
+      document.getElementById('floatHearts').appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }
+
+    function spawnSparkles() {
+      const container = document.getElementById('charContainer');
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.style.left = (10 + Math.random()*80) + '%';
+        s.style.top = (10 + Math.random()*80) + '%';
+        s.style.animationDelay = (Math.random()*0.3) + 's';
+        container.appendChild(s);
+        setTimeout(() => s.remove(), 700);
+      }
+    }
+
+    function showToast(text) {
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = text;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2000);
+    }
+
+    // ===== DECAY =====
+    function decay() {
+      state.energy = Math.max(0, state.energy - 0.3);
+      state.food = Math.max(0, state.food - 0.2);
+      state.mood = Math.max(0, state.mood - 0.15);
+      if (state.food < 20 || state.energy < 20) state.love = Math.max(0, state.love - 0.1);
+      updateStats();
+    }
+
+    // ===== SAVE/LOAD =====
+    function saveState() {
+      try { localStorage.setItem('iloving_state', JSON.stringify(state)); } catch(e) {}
+    }
+    function loadState() {
+      try {
+        const s = JSON.parse(localStorage.getItem('iloving_state'));
+        if (s) Object.assign(state, s);
+      } catch(e) {}
+    }
+
+    // ===== INIT =====
+    loadState();
+    createParticles();
+    updateStats();
+    setInterval(decay, 3000);
+    initDiscord();
+  </script>
+</body>
+</html>
